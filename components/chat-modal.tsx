@@ -131,7 +131,7 @@ export function ChatModal() {
                   <>
                     {messages.map((message) => {
                       const messageText = message.parts?.map((part) => part.type === 'text' ? part.text : '').join('\n') || '';
-                      const isEmpty = message.role === 'assistant' && !messageText;
+                      const isEmpty = message.role === 'assistant' && !messageText.trim();
 
                       // Don't render empty assistant messages
                       if (isEmpty) return null;
