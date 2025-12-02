@@ -29,6 +29,5 @@ export async function searchIndex(options: SearchIndexOptions) {
             aroundLatLngViaIP: options.params.aroundLatLngViaIP
         }
     })
-    console.log("Searched...")
     return result
 }
