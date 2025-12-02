@@ -8,6 +8,7 @@ import { DefaultChatTransport, lastAssistantMessageIsCompleteWithToolCalls } fro
 import { useChat } from '@ai-sdk/react';
 import { useState } from 'react';
 import { searchIndex, Params } from '@/app/api/chat/tools/search_index';
+import { getWeatherForecast } from "@/app/api/chat/tools/get_weather";
 import { MessageCircle, X } from 'lucide-react';
 
 export function ChatModal() {
@@ -27,15 +28,14 @@ export function ChatModal() {
     async onToolCall({toolCall}) {
       const toolName = toolCall.toolName
       console.log("Tool call: ", toolName)
+      console.log(toolCall.input)
       switch (toolName) {
         case "searchIndex":
-          const searchIndexInput: Params = toolCall.input as Params
-          console.log(searchIndexInput)
           const config = {
             appId: "N6BK2U6YFA",
             apiKey: "6e862903176c4e62c4678c04cc8486ba"
           }
-          const results = await searchIndex({ config: config, params: searchIndexInput })
+          const results = await searchIndex({ config: config, params: toolCall.input as Params })
           addToolOutput({
             tool: toolName,
             toolCallId: toolCall.toolCallId,
@@ -43,23 +43,22 @@ export function ChatModal() {
           })
           break
         case "getWeather":
-          const getWeatherInput: { city: string } = toolCall.input as { city: string }
-          console.log(getWeatherInput)
+          const { latitude, longitude }= toolCall.input as { latitude: number, longitude: number }
           addToolOutput({
             tool: toolName,
             toolCallId: toolCall.toolCallId,
             output: {
               message: "Fetched weather information",
               response: {
-                city: getWeatherInput.city,
-                temperature: Math.round(Math.random() * (90 - 32) + 32)
+                weatherForecast: await getWeatherForecast(
+                  latitude,
+                  longitude,
+                )
               }
             }
           })
           break
         case "logStructuredRequest":
-          const logStructuredRequestInput = toolCall.input
-          console.log(logStructuredRequestInput)
           addToolOutput({
             tool: toolName,
             toolCallId: toolCall.toolCallId,
@@ -131,7 +130,7 @@ export function ChatModal() {
                 ) : (
                   <>
                     {messages.map((message) => {
-                      const messageText = message.parts?.map((part) => part.type === 'text' ? part.text : '').join('') || '';
+                      const messageText = message.parts?.map((part) => part.type === 'text' ? part.text : '').join('\n') || '';
                       const isEmpty = message.role === 'assistant' && !messageText;
 
                       // Don't render empty assistant messages
