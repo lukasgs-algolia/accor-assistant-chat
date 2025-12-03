@@ -3,8 +3,8 @@
 import { Conversation, ConversationContent, ConversationEmptyState } from "@/components/ai-elements/conversation";
 import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message";
 import { PromptInput, PromptInputTextarea, PromptInputSubmit } from "@/components/ai-elements/prompt-input";
-import { Suggestions, Suggestion } from "@/components/ai-elements/suggestion";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Suggestion } from "@/components/ai-elements/suggestion";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import { HotelCard } from "@/components/hotel-card";
 import { DefaultChatTransport, lastAssistantMessageIsCompleteWithToolCalls } from 'ai';
@@ -120,6 +120,7 @@ export function ChatModal() {
           showCloseButton={false}
         >
           <DialogTitle className="sr-only">ALL Chat Assistant</DialogTitle>
+          <DialogDescription className="sr-only">Chat with the ALL assistant to find hotels and get travel information</DialogDescription>
 
           {/* Modal Header */}
           <div className="bg-primary text-primary-foreground px-8 py-5 flex items-center justify-between shrink-0">
