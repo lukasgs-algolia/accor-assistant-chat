@@ -160,6 +160,12 @@ export function ChatModal() {
                           sendMessage({ text: suggestion });
                         }}
                       />
+                      <Suggestion
+                        suggestion="What can I do near Brandenburg Gate?"
+                        onClick={(suggestion) => {
+                          sendMessage({ text: suggestion });
+                        }}
+                      />
                     </div>
                   </>
                 ) : (
